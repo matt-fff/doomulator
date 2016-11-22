@@ -89,7 +89,7 @@ function calculateResult(stack) {
   var result = getNum(firstOrder[0]);
   for (k = 1; k + 1 < firstOrder.length; k++) {
     op = operands[firstOrder[k++]];
-    right = getNum(firstOrder[k++]);
+    right = getNum(firstOrder[k]);
 
     result = op(result, right);
   }
@@ -102,7 +102,6 @@ $(document).ready(function() {
   var stack = [];
   var currentNumber = [];
   var currentDecimal = false;
-  var lastVal = null;
 
   function flushCurrentNumber() {
     stack.push(currentNumber);
@@ -116,7 +115,15 @@ $(document).ready(function() {
       currentDecimal = false;
       currentNumber = [];
     } else if (stack.length > 0) {
-      stack.pop();
+      var stackTail = stack.pop();
+
+      // If the last value was an operand,
+      // the easiest way to maintain consistency
+      // is to reload the last numeric value
+      // into the currentNumber variable
+      if (isOperand(stackTail) && stack.length > 0) {
+        loadValues(getNum(stack.pop()) + '');
+      }
     }
   }
   
@@ -142,8 +149,20 @@ $(document).ready(function() {
       output += currentNumber.join('');
     else if (output.length <= 0)
       output += '0';
-    
+
     return output;
+  }
+
+  function getLastVal() {
+    if (currentNumber.length > 0) return currentNumber[currentNumber.length - 1];
+    if (stack.length > 0) {
+      if (stack[stack.length - 1] instanceof Array) {
+        var element = stack[stack.length - 1];
+        return element[element.length - 1];
+      } else return stack[stack.length - 1];
+    }
+
+    return null;
   }
   
   $('button').click(function() {
@@ -152,7 +171,14 @@ $(document).ready(function() {
     loadValue(value);
   });
 
+  function loadValues(values) {
+    for (var k = 0; k < values.length; k++) {
+      loadValue(values.charAt(k));
+    }
+  }
+
   function loadValue(value) {
+    var lastVal = getLastVal();
 
     if (isNumeric(value)) {          // Numeric
       
@@ -181,18 +207,14 @@ $(document).ready(function() {
       var result = calculateResult(stack) + '';
       clearAll();
 
-      for (var k = 0; k < result.length; k++) {
-        loadValue(result.charAt(k));
-      }
+      loadValues(result);
 
       return;
     } else if (isAllClear(value)) {
       clearAll();
     } else if (isClearEntry(value)) {
-      clearEntry();
+      value = clearEntry();
     }
-    
-    lastVal = value;
     
     $('#display').html(getDisplay());
   }
