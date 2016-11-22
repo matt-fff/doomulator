@@ -45,8 +45,56 @@ function isClearEntry(value) {
   return value === 'ce';
 }
 
+function isFirstOrder(value) {
+  return value === '/' || value === '*';
+}
+
+function getNum(val) {
+  if (val instanceof Array)
+    return Number(val.join(''));
+
+  return Number(val);
+}
+
+function round(value) {
+  var strVal = value + '';
+  var decIndex = strVal.indexOf('.');
+
+  // Only round decimals
+  if (decIndex < 0) return value;
+
+  var limit = decIndex + 3;
+  limit = limit <= strVal.length ? limit : strVal.length;
+
+  var rounded = strVal.substring(0, limit);
+
+  return rounded;
+}
+
 function calculateResult(stack) {
-  return 7;
+  var firstOrder = []; // Results from multiplication and division
+
+  var k, left, op, right;
+  for (k = 0; k < stack.length; k++) {
+    if (isFirstOrder(stack[k + 1])) {
+      left = getNum(stack[k++]);
+      op = operands[stack[k++]];
+      right = getNum(stack[k]);
+
+      firstOrder.push(op(left, right));
+    } else
+      firstOrder.push(stack[k]);
+  }
+
+  var result = getNum(firstOrder[0]);
+  for (k = 1; k + 1 < firstOrder.length; k++) {
+    op = operands[firstOrder[k++]];
+    right = getNum(firstOrder[k++]);
+
+    result = op(result, right);
+  }
+
+  return round(result);
 }
 
 $(document).ready(function() {
@@ -57,7 +105,7 @@ $(document).ready(function() {
   var lastVal = null;
 
   function flushCurrentNumber() {
-    stack.push(Number(currentNumber.join()));
+    stack.push(currentNumber);
     
     currentDecimal = false;
     currentNumber = [];
@@ -81,8 +129,14 @@ $(document).ready(function() {
 
   function getDisplay() {
     var output = '';
-    if (stack.length > 0)
-      output += stack.join('');
+    if (stack.length > 0) {
+      for (var k = 0; k < stack.length; k++) {
+        if (stack[k] instanceof Array)
+          output += stack[k].join('');
+        else
+          output += stack[k];
+      }
+    }
 
     if (currentNumber.length > 0)
       output += currentNumber.join('');
