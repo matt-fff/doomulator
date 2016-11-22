@@ -1,0 +1,70 @@
+<head>
+    <!-- Bootstrap Core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/doomulator.min.css" rel="stylesheet">
+
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="js/doomulator.js"></script>
+
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nova+Mono" rel="stylesheet">
+</head>
+
+<div class='container'>
+  <div class='col-xs-4 col-xs-offset-4'>
+    <div id='calculator' class='col-xs-8 col-xs-offset-2'>
+      <div class='row text-center'>
+        <h1>Doomulator</h1>
+      </div>
+
+      <div id='display' class='row panel panel-default text-right'>
+        0
+      </div>
+
+      <div class='buttons'>
+        <div class='row'>
+          <button class='col-xs-3' id='all-clear' value='ac'>ac</button>
+          <button class='col-xs-3' id='clear-entry' value='ce'>ce</button>
+          <button class='col-xs-3' id='divide' value='/'>&divide;</button>
+          <button class='col-xs-3' id='multiply' value='*'>&times;</button>
+        </div>
+
+        <div class='row'>
+          <button class='col-xs-3' value='7'>7</button>
+          <button class='col-xs-3' value='8'>8</button>
+          <button class='col-xs-3' value='9'>9</button>
+          <button class='col-xs-3' id='subtract' value='-'>-</button>
+        </div>
+
+        <div class='row'>
+          <button class='col-xs-3' value='4'>4</button>
+          <button class='col-xs-3' value='5'>5</button>
+          <button class='col-xs-3' value='6'>6</button>
+          <button class='col-xs-3' id='add' value='+'>+</button>
+        </div>
+
+        <div class='row'>
+          <div class='col-xs-9'>
+            <div class='row'>
+              <button class='col-xs-4' value='1'>1</button>
+              <button class='col-xs-4' value='2'>2</button>
+              <button class='col-xs-4' value='3'>3</button>
+            </div>
+
+            <div class='row'>
+              <button class='col-xs-8' value='0'>0</button>
+              <button class='col-xs-4' id='decimal' value='.'>.</button>
+            </div>
+          </div>
+
+          <button class='col-xs-3' id='equals' value='='>=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
